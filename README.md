@@ -1,5 +1,5 @@
 # pw_practice
-pw_practice - The **best** way to learn your passwords.
+pw_practice - The **bestest** way to learn your passwords.
 
  1. Create long, random, secure password
  2. Enter password into pw_practice
