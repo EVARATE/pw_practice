@@ -16,4 +16,4 @@ pw_practice will never save your password. Only your current password is in memo
  3. Run *pw_practice.exe*
 
 ## Elsewhere:
-Clone the repository and compile it yourself. Maybe I'll do that in the future but I haven't yet.
+Clone the repository and compile it yourself with [Qt](https://www.qt.io/). Maybe I'll do that in the future but I haven't yet.
