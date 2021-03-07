@@ -8,16 +8,99 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->lineEdit_PWpreview->setEchoMode(QLineEdit::Password);
+    ui->widget_generator->hide();
+
+    this->generateNewPassword();
 
     connect(ui->pushButton_setPassword, SIGNAL(clicked()), this, SLOT(setNewPW()));
     connect(ui->lineEdit_yourPassword, SIGNAL(returnPressed()), this, SLOT(setNewPW()));
     connect(ui->lineEdit_input, SIGNAL(textChanged(const QString)), this, SLOT(updateInterface()));
     connect(ui->pushButton_toggleHide, SIGNAL(clicked()), this, SLOT(togglePreviewHide()));
+
+    connect(ui->pushButton_toggleGenerator, SIGNAL(clicked()), this, SLOT(toggleGeneratorView()));
+    connect(ui->spinBox_PWlength, SIGNAL(valueChanged(int)), this, SLOT(giveTooShortWarning()));
+    connect(ui->pushButton_newPW, SIGNAL(clicked()), this, SLOT(generateNewPassword()));
+
+    connect(ui->checkBox_lower, SIGNAL(stateChanged(int)), this, SLOT(changePWCheckboxes()));
+    connect(ui->checkBox_upper, SIGNAL(stateChanged(int)), this, SLOT(changePWCheckboxes()));
+    connect(ui->checkBox_numbers, SIGNAL(stateChanged(int)), this, SLOT(changePWCheckboxes()));
+    connect(ui->checkBox_fewerSyms, SIGNAL(stateChanged(int)), this, SLOT(changePWCheckboxes()));
+    connect(ui->checkBox_symbols, SIGNAL(stateChanged(int)), this, SLOT(changeSymbolsCheckbox()));
+
+    connect(ui->toolButton_GeneratorInfo, SIGNAL(clicked()), this, SLOT(viewGeneratorInfo()));
+    connect(ui->pushButton_copyPW, SIGNAL(clicked()), this, SLOT(copyPWToClipboard()));
+    connect(ui->pushButton_setPW_generator, SIGNAL(clicked()), this, SLOT(setNewPWFromGen()));
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::generateNewPassword(){
+    bool useLower = ui->checkBox_lower->isChecked();
+    bool useUpper = ui->checkBox_upper->isChecked();
+    bool useNumbers = ui->checkBox_numbers->isChecked();
+    bool useSymbols = ui->checkBox_symbols->isChecked();
+    bool useFewSymbols = ui->checkBox_fewerSyms->isChecked();
+    int length = ui->spinBox_PWlength->value();
+
+    std::string password = this->generatePassword(length, useLower, useUpper, useNumbers, useSymbols, useFewSymbols);
+    ui->lineEdit_GenPW->setText(QString::fromStdString(password));
+
+}
+
+std::string MainWindow::generatePassword(const int length, const bool lower, const bool upper, const bool numbers, const bool symbols, const bool useFewSymbols){
+    const std::string lowerStr = "abcdefghijklmnopqrstuvwxyz";
+    const std::string upperStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const std::string numberStr = "0123456789";
+    const std::string symbolStr = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
+    // Use this many fewer symbols if requested:
+    int symFactor = 1;
+    if(useFewSymbols){symFactor = 5;}
+
+    std::string allChars = "";      // Yeah, this is messy but who cares
+    for(int i = 0; i < symFactor; ++i){
+        if(lower){allChars += lowerStr;}
+        if(upper){allChars += upperStr;}
+        if(numbers){allChars += numberStr;}
+    }
+    if(symbols){allChars += symbolStr;}
+
+    // Create generator:
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator(seed);
+    std::uniform_int_distribution<int> distr(0, allChars.size());
+
+    std::string passw = "";
+    for(int i = 0; i < length; ++i){
+        int rnd = distr(generator);
+        char randChar = allChars[rnd];
+
+        //No idea why but randChar is sometimes '\000' and noone wants that
+        if(randChar == '\000'){
+            i--;
+        }
+        else{
+            passw += randChar;
+        }
+
+    }
+    return passw;
+}
+
+void MainWindow::giveTooShortWarning(){
+    if(ui->spinBox_PWlength->value() <= 8){
+        ui->spinBox_PWlength->setStyleSheet("QSpinBox {color: red;}");
+    }
+    else{
+        ui->spinBox_PWlength->setStyleSheet("QSpinBox {color: black;}");
+    }
+
+    // Also regenerate password
+    this->generateNewPassword();
 }
 
 void MainWindow::setNewPW(){
@@ -70,4 +153,55 @@ void MainWindow::togglePreviewHide(){
         ui->lineEdit_PWpreview->setEchoMode(QLineEdit::Password);
     }
     isHidden = !isHidden;
+}
+
+
+void MainWindow::toggleGeneratorView(){
+    if(ui->widget_generator->isHidden()){
+        ui->widget_generator->show();
+    }else{
+        ui->widget_generator->hide();
+    }
+}
+
+void MainWindow::changePWCheckboxes(){
+    bool useLower = ui->checkBox_lower->isChecked();
+    bool useUpper = ui->checkBox_upper->isChecked();
+    bool useNumbers = ui->checkBox_numbers->isChecked();
+    bool useSymbols = ui->checkBox_symbols->isChecked();
+
+    if(useLower == false &&
+       useUpper == false &&
+       useNumbers == false &&
+       useSymbols == false){
+        ui->checkBox_lower->setChecked(true);
+    }
+
+    this->generateNewPassword();
+}
+
+void MainWindow::changeSymbolsCheckbox(){
+    this->changePWCheckboxes();
+    if(ui->checkBox_symbols->isChecked()){
+        ui->checkBox_fewerSyms->setEnabled(true);
+    }
+    else{
+        ui->checkBox_fewerSyms->setEnabled(false);
+    }
+}
+
+void MainWindow::viewGeneratorInfo(){
+    QMessageBox msgBox;
+    msgBox.setText("Important:\n\nThis password generator uses the 'std::default_random_engine' which might not be cryptographically safe.");
+    msgBox.exec();
+}
+
+void MainWindow::copyPWToClipboard(){
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->lineEdit_GenPW->text());
+}
+
+void MainWindow::setNewPWFromGen(){
+    ui->lineEdit_yourPassword->setText(ui->lineEdit_GenPW->text());
+    this->setNewPW();
 }
