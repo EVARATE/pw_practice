@@ -17,6 +17,9 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="4" column="0">
      <widget class="QLineEdit" name="lineEdit_input">
+      <property name="toolTip">
+       <string>Try to enter your password form memory here.</string>
+      </property>
       <property name="placeholderText">
        <string>Your Input</string>
       </property>
@@ -39,6 +42,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLineEdit" name="lineEdit_PWpreview">
+        <property name="toolTip">
+         <string>Password preview</string>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -49,8 +55,14 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_toggleHide">
+        <property name="toolTip">
+         <string>Toggle view of the password (Ctrl + H)</string>
+        </property>
         <property name="text">
          <string>Toggle view</string>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+H</string>
         </property>
        </widget>
       </item>
@@ -83,6 +95,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_setPassword">
+        <property name="toolTip">
+         <string>Set as new password to learn</string>
+        </property>
         <property name="text">
          <string>Set</string>
         </property>

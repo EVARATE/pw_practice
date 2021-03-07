@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_PWpreview->setEchoMode(QLineEdit::Password);
 
     connect(ui->pushButton_setPassword, SIGNAL(clicked()), this, SLOT(setNewPW()));
+    connect(ui->lineEdit_yourPassword, SIGNAL(returnPressed()), this, SLOT(setNewPW()));
     connect(ui->lineEdit_input, SIGNAL(textChanged(const QString)), this, SLOT(updateInterface()));
     connect(ui->pushButton_toggleHide, SIGNAL(clicked()), this, SLOT(togglePreviewHide()));
 }
@@ -26,6 +27,7 @@ void MainWindow::setNewPW(){
     ui->lineEdit_input->setText("");
     this->correctCounter = 0;
     this->updateInterface();
+    ui->lineEdit_input->setFocus();
 
 }
 
@@ -56,6 +58,7 @@ void MainWindow::updateInterface(){
 
 void MainWindow::resetInterface(){
     ui->lineEdit_input->setText("");
+
 }
 
 void MainWindow::togglePreviewHide(){
