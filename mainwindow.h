@@ -20,6 +20,7 @@ private:
     Ui::MainWindow *ui;
 
     std::string currPassword;
+    int correctCounter = 0;
 
 private slots:
     void setNewPW();

@@ -15,32 +15,12 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="bottomMargin">
-       <number>0</number>
+    <item row="4" column="0">
+     <widget class="QLineEdit" name="lineEdit_input">
+      <property name="placeholderText">
+       <string>Your Input</string>
       </property>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_yourPassword">
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>Set new Password</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_setPassword">
-        <property name="text">
-         <string>Set</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
     </item>
     <item row="2" column="0">
      <spacer name="verticalSpacer">
@@ -76,17 +56,44 @@
       </item>
      </layout>
     </item>
-    <item row="4" column="0">
-     <widget class="QLineEdit" name="lineEdit_input">
-      <property name="placeholderText">
-       <string>Your Input</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="Line" name="line">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_yourPassword">
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>Set new Password</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_setPassword">
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_counter">
+      <property name="text">
+       <string>Count: 0</string>
       </property>
      </widget>
     </item>

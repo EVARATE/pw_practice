@@ -24,20 +24,34 @@ void MainWindow::setNewPW(){
     ui->lineEdit_PWpreview->setText(ui->lineEdit_yourPassword->text());
     ui->lineEdit_yourPassword->setText("");
     ui->lineEdit_input->setText("");
+    this->correctCounter = 0;
     this->updateInterface();
 
 }
 
 void MainWindow::updateInterface(){
     std::string newInput = ui->lineEdit_input->text().toUtf8().constData();
-    if(!startsWith(this->currPassword, newInput)){
+
+    if(startsWith(this->currPassword, newInput)){
+        // If input matches entire password:
+        if(newInput == this->currPassword){
+            this->correctCounter++;
+            std::string countStr = "Count: " + std::to_string(this->correctCounter);
+            ui->label_counter->setStyleSheet("QLabel {color: green;}");
+            ui->label_counter->setText(QString::fromStdString(countStr));
+            this->resetInterface();
+            return;
+        }else{
+            // Input matches part of beginning:
+            if(newInput.size() >= 1){
+                ui->label_counter->setStyleSheet("QLabel {color: black;}");
+            }
+        }
+    }else{
         this->resetInterface();
     }
 
-    // If input matches entire password, reset it too:
-    if(newInput.size() == this->currPassword.size()){
-        this->resetInterface();
-    }
+
 }
 
 void MainWindow::resetInterface(){
