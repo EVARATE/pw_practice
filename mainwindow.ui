@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>504</width>
-    <height>309</height>
+    <width>531</width>
+    <height>393</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,6 +50,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_toggleGenerator">
+          <property name="toolTip">
+           <string>Toggle password generator</string>
+          </property>
           <property name="text">
            <string>Generator &gt;&gt;</string>
           </property>
@@ -341,7 +344,7 @@
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>Set probability of a character being a symbol 5 times lower than normal.</string>
+              <string>Set probability of a character being a symbol 3 times lower than normal.</string>
              </property>
              <property name="text">
               <string>Fewer Symbols</string>
@@ -395,12 +398,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>504</width>
-     <height>20</height>
+     <width>531</width>
+     <height>31</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections>
@@ -411,12 +413,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>368</x>
-     <y>114</y>
+     <x>517</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
-     <x>486</x>
-     <y>137</y>
+     <x>516</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>
@@ -427,12 +429,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>425</x>
-     <y>143</y>
+     <x>516</x>
+     <y>210</y>
     </hint>
     <hint type="destinationlabel">
-     <x>423</x>
-     <y>118</y>
+     <x>517</x>
+     <y>172</y>
     </hint>
    </hints>
   </connection>

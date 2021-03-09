@@ -59,7 +59,7 @@ std::string MainWindow::generatePassword(const int length, const bool lower, con
 
     // Use this many fewer symbols if requested:
     int symFactor = 1;
-    if(useFewSymbols){symFactor = 5;}
+    if(useFewSymbols){symFactor = 3;}
 
     std::string allChars = "";      // Yeah, this is messy but who cares
     for(int i = 0; i < symFactor; ++i){
@@ -112,6 +112,10 @@ void MainWindow::setNewPW(){
     this->updateInterface();
     ui->lineEdit_input->setFocus();
 
+    // Update Counter:
+    std::string countStr = "Count: " + std::to_string(this->correctCounter);
+    ui->label_counter->setStyleSheet("QLabel {color: black;}");
+    ui->label_counter->setText(QString::fromStdString(countStr));
 }
 
 void MainWindow::updateInterface(){
@@ -158,23 +162,28 @@ void MainWindow::togglePreviewHide(){
 
 void MainWindow::toggleGeneratorView(){
     if(ui->widget_generator->isHidden()){
+        ui->pushButton_toggleGenerator->setText("Generator <<");
         ui->widget_generator->show();
     }else{
+        ui->pushButton_toggleGenerator->setText("Generator >>");
         ui->widget_generator->hide();
     }
 }
 
 void MainWindow::changePWCheckboxes(){
-    bool useLower = ui->checkBox_lower->isChecked();
+    //bool useLower = ui->checkBox_lower->isChecked();
     bool useUpper = ui->checkBox_upper->isChecked();
     bool useNumbers = ui->checkBox_numbers->isChecked();
     bool useSymbols = ui->checkBox_symbols->isChecked();
 
-    if(useLower == false &&
-       useUpper == false &&
+    if(useUpper == false &&
        useNumbers == false &&
        useSymbols == false){
         ui->checkBox_lower->setChecked(true);
+        ui->checkBox_lower->setEnabled(false);
+    }
+    else{
+        ui->checkBox_lower->setEnabled(true);
     }
 
     this->generateNewPassword();
@@ -192,7 +201,7 @@ void MainWindow::changeSymbolsCheckbox(){
 
 void MainWindow::viewGeneratorInfo(){
     QMessageBox msgBox;
-    msgBox.setText("Important:\n\nThis password generator uses the 'std::default_random_engine' which might not be cryptographically safe.");
+    msgBox.setText("Important:\nThis password generator uses the 'std::default_random_engine' which might not be cryptographically safe.");
     msgBox.exec();
 }
 
