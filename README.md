@@ -18,4 +18,4 @@ pw_practice will never save your password. Only your current password is in memo
  1. Download the latest pw_practice_Windows.zip under releases
  2. Extract it somewhere
  3. Run *pw_practice.exe*
- 4. 
+ 
