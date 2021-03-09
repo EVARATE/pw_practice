@@ -11,9 +11,10 @@ pw_practice will never save your password. Only your current password is in memo
 # Installation
 
 ## On Windows:
- 1. Download the latest .zip under releases
+ 1. Download the latest pw_practice_Windows.zip under releases
  2. Extract it somewhere
  3. Run *pw_practice.exe*
 
 ## Elsewhere:
-Clone the repository and compile it yourself with [Qt](https://www.qt.io/). Maybe I'll do that in the future but I haven't yet.
+ - **Option 1:** Clone the repo and compile it with [Qt](https://www.qt.io/)
+ - **Option 2:** Download the Appimage, give it execute permissions with `chmod +x pw_practice-x68_64.AppImage` and run it.
