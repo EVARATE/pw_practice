@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
+    <width>661</width>
     <height>393</height>
    </rect>
   </property>
@@ -14,8 +14,8 @@
    <string>Password Practice</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_7">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0">
@@ -81,6 +81,34 @@
        </spacer>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_hintContainer" stretch="0,0">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_hintDummy1">
+          <property name="font">
+           <font>
+            <family>DejaVu Sans Mono</family>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>dummy123</string>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Normal</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_hintDummy2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLineEdit" name="lineEdit_PWpreview">
@@ -129,7 +157,7 @@
       </item>
      </layout>
     </item>
-    <item>
+    <item row="0" column="1">
      <widget class="QWidget" name="widget_generator" native="true">
       <layout class="QGridLayout" name="gridLayout">
        <property name="leftMargin">
@@ -398,8 +426,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>531</width>
-     <height>31</height>
+     <width>661</width>
+     <height>27</height>
     </rect>
    </property>
   </widget>

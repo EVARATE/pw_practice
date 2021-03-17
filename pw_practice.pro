@@ -11,10 +11,12 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    managed_pw.cpp \
     misc.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    managed_pw.h
 
 FORMS += \
     mainwindow.ui

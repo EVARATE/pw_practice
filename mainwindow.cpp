@@ -1,6 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void clearLayout(QLayout* layout, bool deleteWidgets = true)
+{
+    while (QLayoutItem* item = layout->takeAt(0))
+    {
+        QWidget* widget;
+        if (  (deleteWidgets)
+              && (widget = item->widget())  ) {
+            delete widget;
+        }
+        if (QLayout* childLayout = item->layout()) {
+            clearLayout(childLayout, deleteWidgets);
+        }
+        delete item;
+    }
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,12 +27,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->widget_generator->hide();
     this->generateNewPassword();
 
+    // Delete Dummies:
+    delete ui->lineEdit_hintDummy1;
+    delete ui->lineEdit_hintDummy2;
+
 
     /* Practice UI: */
     connect(ui->pushButton_setPassword, SIGNAL(clicked()), this, SLOT(setNewPW()));
     connect(ui->lineEdit_yourPassword, SIGNAL(returnPressed()), this, SLOT(setNewPW()));
     connect(ui->lineEdit_input, SIGNAL(textChanged(const QString)), this, SLOT(updateInterface()));
     connect(ui->pushButton_toggleHide, SIGNAL(clicked()), this, SLOT(togglePreviewHide()));
+    connect(ui->lineEdit_input, SIGNAL(returnPressed()), this, SLOT(resetInterface()));
 
     /* PW Generator UI: */
     connect(ui->pushButton_toggleGenerator, SIGNAL(clicked()), this, SLOT(toggleGeneratorView()));
@@ -41,6 +62,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setNewPW(){
+    // Set new Password:
+    managed_pw newManagedPW(ui->lineEdit_yourPassword->text().toUtf8().constData());
+    this->managedPW = newManagedPW;
+    this->regenerateHintWidgets();
+
+
     this->currPassword = ui->lineEdit_yourPassword->text().toUtf8().constData();
     ui->lineEdit_PWpreview->setText(ui->lineEdit_yourPassword->text());
     ui->lineEdit_yourPassword->setText("");
@@ -134,7 +161,7 @@ void MainWindow::giveTooShortWarning(){
 
 void MainWindow::viewGeneratorInfo(){
     QMessageBox msgBox;
-    msgBox.setText("Important:\nThis password generator uses the 'std::default_random_engine' which might not be cryptographically safe.");
+    msgBox.setText("This password generator uses the 'std::default_random_engine' which might not be cryptographically safe.");
     msgBox.exec();
 }
 
@@ -222,4 +249,32 @@ std::string MainWindow::generatePassword(const int length, const bool lower, con
         }
     }
     return passw;
+}
+
+void MainWindow::regenerateHintWidgets(){
+    // Clear layout first:
+    clearLayout(ui->horizontalLayout_hintContainer);
+
+    auto& thisManagedPW = this->managedPW;
+
+    // Create lineEdits for each password chunk:
+    for(int i = 0; i < (int)thisManagedPW.pwChunks.size(); ++i){
+        QString text = QString::fromStdString(thisManagedPW.pwChunks[i].content);
+        auto *lineEditChunk = new QLineEdit;
+        lineEditChunk->setText(text);
+        lineEditChunk->setReadOnly(true);
+
+        ui->horizontalLayout_hintContainer->addWidget(lineEditChunk);
+
+        // Resize to content:
+        QFont font("", 0);
+        QFontMetrics fm(font);
+        int width = fm.horizontalAdvance(text);
+        //int height = fm.height();
+        lineEditChunk->setFixedWidth(width * 2);
+    }
+
+    // Add spacer on the right:
+    ui->horizontalLayout_hintContainer->insertStretch((int)thisManagedPW.pwChunks.size());
+
 }

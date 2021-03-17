@@ -6,7 +6,12 @@
 #include <chrono>
 #include <QMessageBox>
 #include <QClipboard>
+#include <QBoxLayout>
+#include <QLineEdit>
+#include <QFont>
+#include <QFontMetrics>
 #include "misc.cpp"
+#include "managed_pw.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +27,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    managed_pw managedPW;
 
     std::string currPassword;
     int correctCounter = 0;
@@ -48,6 +55,9 @@ private slots:
     void changeSymbolsCheckbox();
     void copyPWToClipboard();
     void setNewPWFromGen();
+
+    // Hint system:
+    void regenerateHintWidgets();
 
 };
 #endif // MAINWINDOW_H
